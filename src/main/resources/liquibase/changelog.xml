@@ -1,0 +1,98 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet id="0001" author="Rafael Lourenço">
+        <comment>Add pokémon table</comment>
+        <createTable tableName="pokemon">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="dex_number" type="SMALLINT">
+                <constraints nullable="false"  unique="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="legendary" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="generation" type="int(2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="type_one" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="type_two" type="BIGINT">
+                <constraints nullable="true" />
+            </column>
+            <column name="base_stats_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="Timestamp"
+                    defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <comment>Add pokémon table</comment>
+        <createTable tableName="type">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="Timestamp"
+                    defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <comment>Add base stats table</comment>
+        <createTable tableName="base_stats">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="hp" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="atk" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="def" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="sp_atk" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="sp_def" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="speed" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="Timestamp"
+                    defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <comment>Pokémon Type 1</comment>
+        <addForeignKeyConstraint constraintName="fk_poke_type_one"
+                                 baseTableName="pokemon"
+                                 baseColumnNames="type_one"
+                                 referencedTableName="type"
+                                 referencedColumnNames="id"/>
+
+        <comment>Pokémon Type 2</comment>
+        <addForeignKeyConstraint constraintName="fk_poke_type_two"
+                                 baseTableName="pokemon"
+                                 baseColumnNames="type_two"
+                                 referencedTableName="type"
+                                 referencedColumnNames="id"/>
+
+        <comment>Pokémon Base Stats</comment>
+        <addForeignKeyConstraint constraintName="fk_pokemon_stats"
+                                 baseTableName="pokemon"
+                                 baseColumnNames="base_stats_id"
+                                 referencedTableName="base_stats"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+</databaseChangeLog>
