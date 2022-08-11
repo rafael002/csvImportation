@@ -73,6 +73,32 @@
                     defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
         </createTable>
 
+        <comment>Pokémon variations</comment>
+        <createTable tableName="pokemon_variations">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="type_one" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="type_two" type="BIGINT">
+                <constraints nullable="true" />
+            </column>
+            <column name="base_stats_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="original_pokemon_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="Timestamp"
+                    defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <!--pokémon-->
         <comment>Pokémon Type 1</comment>
         <addForeignKeyConstraint constraintName="fk_poke_type_one"
                                  baseTableName="pokemon"
@@ -94,5 +120,33 @@
                                  referencedTableName="base_stats"
                                  referencedColumnNames="id"/>
 
+        <!--variations-->
+        <comment>Pokémon Variations</comment>
+        <addForeignKeyConstraint constraintName="fk_pokemon_variations"
+                                 baseTableName="pokemon_variations"
+                                 baseColumnNames="original_pokemon_id"
+                                 referencedTableName="pokemon"
+                                 referencedColumnNames="id"/>
+
+        <comment>Pokémon Variation Base Stats</comment>
+        <addForeignKeyConstraint constraintName="fk_pokemon_variation_stats"
+                                 baseTableName="pokemon_variations"
+                                 baseColumnNames="base_stats_id"
+                                 referencedTableName="base_stats"
+                                 referencedColumnNames="id"/>
+
+        <comment>Pokémon Variation Type 1</comment>
+        <addForeignKeyConstraint constraintName="fk_pokemon_variation_type_one"
+                                 baseTableName="pokemon_variations"
+                                 baseColumnNames="type_one"
+                                 referencedTableName="type"
+                                 referencedColumnNames="id"/>
+
+        <comment>Pokémon Variation Type 2</comment>
+        <addForeignKeyConstraint constraintName="fk_pokemon_variation_type_two"
+                                 baseTableName="pokemon_variations"
+                                 baseColumnNames="type_two"
+                                 referencedTableName="type"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
